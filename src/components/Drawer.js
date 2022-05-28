@@ -1,22 +1,23 @@
-function Drawer() {
+function Drawer({ onClose, items = [] }) {
     return (
-        <div className="overlay" style={{ display: 'none' }}>
+        <div className="overlay" >
             <div className="drawer d-flex">
                 <div className="drawer__header d-flex justify-between mb-30 aling-center">
                     <h2 className="drawer__title ">Корзина</h2>
-                    <img className="drawer__btn-remove cu-p" src="/img/remove-btn.svg" alt="remove" />
+                    <img onClick={onClose} className="drawer__btn-remove cu-p" src="/img/remove-btn.svg" alt="remove" />
                 </div>
                 <div className="drawer__inner">
-
-                    <div className="drawer__cart d-flex align center mb-20">
-                        <img className="mr-20" width={70} height={70} src="/img/sneakers/1.png" alt="Sneakers" />
-                        <div className="drawer__cart-info mr-20">
-                            <p className="drawer__cart-name mb-5">Мужские Кроссовки Nike Blazer Mid Suede</p>
-                            <span className="drawer__cart-price">12 999 грн.</span>
+                    {items.map(obj => (
+                        <div className="drawer__cart d-flex align center mb-20">
+                            <img className="mr-20" width={70} height={70} src={obj.imageUrl} alt="Sneakers" />
+                            <div className="drawer__cart-info mr-20">
+                                <p className="drawer__cart-name mb-5">{obj.title}</p>
+                                <span className="drawer__cart-price">{obj.price}</span>
+                            </div>
+                            <img className="drawer__btn-remove" src="/img/remove-btn.svg" alt="remove" />
                         </div>
-                        <img className="drawer__btn-remove" src="/img/remove-btn.svg" alt="remove" />
-                    </div>
-
+                    ))
+                    }
                 </div>
                 <ul className="drawer-total">
                     <li className="d-flex">
