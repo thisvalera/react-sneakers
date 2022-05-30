@@ -6,6 +6,7 @@ import Drawer from './components/Drawer';
 function App() {
   const [sneakers, setSneakers] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
   const [cartOpened, setCartOpened] = useState(false);
 
   useEffect(() => {
@@ -21,21 +22,27 @@ function App() {
 
   }
 
+  const onChangeSearchInput = (event) => {
+    setSearchValue(event.target.value)
+  }
+
   return (
     <div className="wrapper clear">
       {cartOpened ? <Drawer items={cartItems} onClose={() => setCartOpened(false)} /> : null}
       <Header onClickCart={() => setCartOpened(true)} />
       <div className="content p-40">
         <div className="d-flex align-center justify-between mb-40">
-          <h1>Все кроссовки</h1>
+          <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : "Все кроссовки"}</h1>
           <div className="search-box">
             <img src="/img/search.svg" alt="search" />
-            <input className="search-box__input" type="text" placeholder="Поиск..." />
+            {searchValue && <img onClick={() => setSearchValue('')} className="clear drawer__btn-remove" src="/img/remove-btn.svg" alt="cleare" />}
+            <input onChange={onChangeSearchInput} value={searchValue} className="search-box__input" type="text" placeholder="Поиск..." />
           </div>
         </div>
         <div className="d-flex flex-wrap">
-          {sneakers.map(item =>
+          {sneakers.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase())).map(item =>
             <Card
+              key={item.imageUrl}
               title={item.title}
               price={item.price}
               imageUrl={item.imageUrl}
