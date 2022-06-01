@@ -8,7 +8,7 @@ function Drawer({ onClose, onRemove, items = [] }) {
                 </div>
                 <div className="drawer__inner">
                     {items.map(obj => (
-                        <div className="drawer__cart d-flex align center mb-20">
+                        <div key={obj.id} className="drawer__cart d-flex align center mb-20">
                             <img className="mr-20" width={70} height={70} src={obj.imageUrl} alt="Sneakers" />
                             <div className="drawer__cart-info mr-20">
                                 <p className="drawer__cart-name mb-5">{obj.title}</p>
