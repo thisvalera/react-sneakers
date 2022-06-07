@@ -1,4 +1,34 @@
+import React, { useContext, useState } from 'react';
+import axios from 'axios';
+import AppContext from '../context';
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 function Drawer({ onClose, onRemove, items = [] }) {
+    const { cartItems, setCartItems } = useContext(AppContext);
+    const [OrderId, setOrderId] = useState(null);
+    const [isOrderComplete, setIsOrderComplete] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const onClickOrder = async () => {
+        try {
+            setIsLoading(true);
+            const { data } = await axios.post('https://629202f8cd0c91932b6bddda.mockapi.io/orders', {
+                items: cartItems,
+            });
+            setOrderId(data.id)
+            setIsOrderComplete(true);
+            setCartItems([]);
+            for (let i = 0; i < cartItems.length; i++) {
+                const item = cartItems[i];
+                await axios.delete('https://629202f8cd0c91932b6bddda.mockapi.io/cart/' + item.id);
+                await delay(1000);
+            }
+        }
+        catch (error) {
+            alert('Ошибка при создании заказа');
+        }
+        setIsLoading(false);
+    }
     return (
         <div className="overlay" >
             <div className="drawer d-flex">
@@ -31,7 +61,7 @@ function Drawer({ onClose, onRemove, items = [] }) {
                         <span>1074 грн</span>
                     </li>
                 </ul>
-                <button className="drawer-total__btn button">Оформить заказ <img src="/img/arrow.svg" alt="arrow" /></button>
+                <button onClick={onClickOrder} className="drawer-total__btn button">Оформить заказ <img src="/img/arrow.svg" alt="arrow" /></button>
             </div>
         </div >
     );
