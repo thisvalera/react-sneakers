@@ -26,7 +26,7 @@ function Home({ sneakers, searchValue, setSearchValue, onChangeSearchInput, onAd
                     <input onChange={onChangeSearchInput} value={searchValue} className="search-box__input" type="text" placeholder="Поиск..." />
                 </div>
             </div>
-            <div className="d-flex flex-wrap">
+            <div className="d-flex flex-wrap inner-cross">
 
                 {renderItems()}
             </div>
